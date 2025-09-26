@@ -1,0 +1,27 @@
+div.camera_stop {
+  display: none !important;
+}
+div.camera_commands {
+  display: none !important;
+}
+div.camera_pie {
+  display: none !important;
+}
+.textcontexts {
+  animation-delay: 0.3s;
+}
+.active {
+  opacity: 1;
+  font-weight: 700;
+  color: white !important;
+}
+*:focus {
+  outline: none !important;
+}
+
+.js-copyright-label {
+  display: none !important;
+}
+// .slick-slide {
+//   margin: 0 4px;
+// }

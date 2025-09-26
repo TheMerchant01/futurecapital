@@ -1,0 +1,50 @@
+div.camera_stop {
+  display: none !important;
+}
+
+div.camera_commands {
+  display: none !important;
+}
+
+div.camera_pie {
+  display: none !important;
+}
+
+.textcontexts {
+  animation-delay: 0.3s;
+}
+
+.active {
+  opacity: 1;
+  font-weight: 700;
+  color: white !important;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+.js-copyright-label {
+  display: none !important;
+}
+
+/*# sourceMappingURL=styles.css.map */
+
+.Toastify__close-button {
+  display: none;
+}
+
+.Toastify__toast-container {
+  border-radius: 50%;
+}
+
+div[style*="display: table"] {
+  display: block !important;
+  width: 100% !important;
+  /* Adjust width as needed */
+  /* Add any other styles you want for the block display */
+}
+
+a[class^="tidio-"] {
+  display: none;
+}
