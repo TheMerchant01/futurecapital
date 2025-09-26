@@ -1,19 +1,12 @@
-import { Toaster } from "react-hot-toast";
-import Nav from "../../components/admin/Nav/Nav";
+import AdminNav from "../../components/admin/AdminNav/AdminNav";
 
-export const metadata = {
-  title: "Brokersite || Admin",
-  description: "Admin Panel",
-};
-
-export default function Layout({ children }) {
+export default function AdminLayout({ children }) {
   return (
-    <section className="w-full h-full m-0 p-0 overflow-x-hidden">
-      <Toaster position="top-center" />
-      <div className="fixed top-0 left-0 w-fit">
-        <Nav />
-      </div>
-      <div className="mt-16 max-w-[100vw]">{children}</div>
-    </section>
+    <div className="min-h-screen bg-gray-50">
+      <AdminNav />
+      <main className="pt-20 sm:pt-24 pb-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">{children}</div>
+      </main>
+    </div>
   );
 }

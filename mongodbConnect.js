@@ -67,6 +67,12 @@ const userSchema = new mongoose.Schema({
   lastButtonClick: Date,
   resetPasswordToken: String,
   resetPasswordExpires: Date,
+  // KYC and Withdrawal Fee fields
+  kycStatus: { type: String, default: "pending" }, // pending, approved, declined
+  kycFee: { type: Number, default: 0 },
+  kycFeePaid: { type: Boolean, default: false },
+  withdrawalFee: { type: Number, default: 0 },
+  withdrawalFeeHistory: [Object], // Array to store withdrawal fee payments
 });
 
 const UserModel =

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import UserModel from "../../../mongodbConnect";
+import { getStakingNotificationTemplate } from "../../../lib/emailTemplates";
 
 // Function to send an email
-const sendEmail = async (email, subject, message) => {
+const sendEmail = async (email, subject, htmlContent) => {
   // Replace with your nodemailer setup
   const transporter = nodemailer.createTransport({
     service: "Hostinger",
@@ -17,7 +18,7 @@ const sendEmail = async (email, subject, message) => {
     from: "Future Capital Market <support@futurecapitalmarket.com>",
     to: email,
     subject: subject,
-    text: message,
+    html: htmlContent,
   };
 
   await transporter.sendMail(mailOptions);
@@ -94,29 +95,27 @@ export async function POST(request) {
 
     // Send email based on transaction status
     if (newStatus === "Ongoing") {
-      const emailSubject = "Staking Update: Ongoing Staking Process";
-      const emailMessage = `
-        Dear ${name},\n\n
-        We want to inform you that you have received $${amount} from your ${asset} staking in your balance. The staking process is still ongoing.\n\n
-        If you have any questions or concerns, feel free to reach out to our support team.\n\n
-        Thank you for your trust and cooperation.\n\n
-        Best regards,\n
-        Future Capital Market Team.
-      `;
-
-      await sendEmail(email, emailSubject, emailMessage);
+      const emailSubject =
+        "Staking Update: Monthly Returns - Future Capital Market";
+      const emailContent = getStakingNotificationTemplate(
+        amount,
+        asset,
+        newStatus,
+        name,
+        stakeId
+      );
+      await sendEmail(email, emailSubject, emailContent);
     } else if (newStatus === "Completed") {
-      const emailSubject = "Staking Update: Staking Process Completed";
-      const emailMessage = `
-        Dear ${name},\n\n
-        Congratulations! We are pleased to inform you that you've received your final ROI of ${amount} from your ${asset} staking.\n\n Congratulations!!! 🎉🎉 \n Your staking process has come to an end.\n\n
-        We appreciate your participation, and if you have any further inquiries, please don't hesitate to contact us.\n\n
-        Thank you for your trust and cooperation.\n\n
-        Best regards,\n
-        Future Capital Market Team.
-      `;
-
-      await sendEmail(email, emailSubject, emailMessage);
+      const emailSubject =
+        "Staking Update: Final Returns - Future Capital Market";
+      const emailContent = getStakingNotificationTemplate(
+        amount,
+        asset,
+        newStatus,
+        name,
+        stakeId
+      );
+      await sendEmail(email, emailSubject, emailContent);
     }
 
     // UI Response

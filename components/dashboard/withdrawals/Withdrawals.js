@@ -176,6 +176,19 @@ export default function Withdrawals() {
     e.preventDefault();
     setLoading(true);
 
+    // Check KYC status first
+    if (details.kycStatus !== "approved") {
+      Swal.fire({
+        icon: "warning",
+        title: "KYC Verification Required",
+        text: "Please complete KYC verification before making withdrawals.",
+        background: isDarkMode ? "#111" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+      });
+      setLoading(false);
+      return;
+    }
+
     let computedTradeBonus = 0;
     if (formData.withdrawalAccount === "mainAccount") {
       computedTradeBonus = Number(details.tradingBalance);

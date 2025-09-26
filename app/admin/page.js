@@ -1,6 +1,5 @@
-import React from "react";
-import Dash from "../../components/admin/Dashboard/Dash";
+import { redirect } from "next/navigation";
 
-export default function page() {
-  return <Dash />;
+export default function AdminPage() {
+  redirect("/admin/overview");
 }

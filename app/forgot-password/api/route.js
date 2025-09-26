@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import UserModel from "../../../mongodbConnect";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
+import { getPasswordResetTemplate } from "../../../../lib/emailTemplates";
 
 export async function POST(request) {
   try {
@@ -80,17 +81,8 @@ export async function POST(request) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: lowerEmail,
-      subject: "Password Reset Request",
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto;">
-          <h2 style="color: #333;">Password Reset Request </h2>
-          <p>You requested to reset your password for Future Capital Market. Please click the button below to reset it:</p>
-          <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #0066b1;  color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">Reset Password</a>
-          <p style="margin-top: 20px;">This link will expire in 1 hour.</p>
-          <p>If you did not request this, please ignore this email or contact support.</p>
-          <p style="margin-top: 20px; color: #777;">© ${new Date().getFullYear()} Future Capital Market. All rights reserved.</p>
-        </div>
-      `,
+      subject: "Password Reset Request - Future Capital Market",
+      html: getPasswordResetTemplate(resetUrl, user.firstName || "User"),
       headers: {
         "X-Debug-Trace": `Reset-Request-${Date.now()}`,
       },
