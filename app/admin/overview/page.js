@@ -183,7 +183,7 @@ export default function AdminOverview() {
           Admin Dashboard
         </h1>
         <p className="text-sm sm:text-base text-gray-600">
-          Welcome back! Here's what's happening with your platform.
+          Welcome back! Here&apos;s what&apos;s happening with your platform.
         </p>
       </div>
 
@@ -270,7 +270,7 @@ export default function AdminOverview() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
-                  Today's Transactions
+                  Today&apos;s Transactions
                 </p>
                 <p className="text-2xl font-bold text-purple-600">
                   {stats.todayTransactions}

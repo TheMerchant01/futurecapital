@@ -72,15 +72,6 @@ export default function WithdrawalFeePayment() {
     },
   ];
 
-  useEffect(() => {
-    if (withdrawalId) {
-      fetchWithdrawalData();
-    } else {
-      // If no withdrawal ID, redirect to dashboard
-      router.push("/dashboard");
-    }
-  }, [withdrawalId]);
-
   const fetchWithdrawalData = async () => {
     try {
       const response = await axios.get("/db/getUser/api");
@@ -110,6 +101,15 @@ export default function WithdrawalFeePayment() {
       toast.error("Failed to fetch withdrawal data");
     }
   };
+
+  useEffect(() => {
+    if (withdrawalId) {
+      fetchWithdrawalData();
+    } else {
+      // If no withdrawal ID, redirect to dashboard
+      router.push("/dashboard");
+    }
+  }, [withdrawalId, fetchWithdrawalData, router]);
 
   const handlePayment = async () => {
     if (

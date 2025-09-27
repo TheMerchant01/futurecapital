@@ -71,10 +71,6 @@ export default function KYCPayment() {
     },
   ];
 
-  useEffect(() => {
-    fetchKycInfo();
-  }, []);
-
   const fetchKycInfo = async () => {
     try {
       const response = await axios.get("/db/getUser/api");
@@ -95,6 +91,10 @@ export default function KYCPayment() {
       console.error("Error fetching KYC info:", error);
     }
   };
+
+  useEffect(() => {
+    fetchKycInfo();
+  }, [fetchKycInfo]);
 
   const handlePayment = async () => {
     if (!kycFee || kycFee <= 0) {
