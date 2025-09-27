@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../../mongodbConnect";
+import UserModel from "../../../mongodbConnect";
 
 export const revalidate = 30;
 

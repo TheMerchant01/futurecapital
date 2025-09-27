@@ -1,10 +1,22 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../../mongodbConnect";
+import UserModel from "../../../mongodbConnect";
 import mongoose from "mongoose";
 
 // Define the POST method to add latest trades
 export async function POST(request) {
-  const { email, amount, selectedDate, asset, duration, type, entryPrice, lotSize, stopLoss, takeProfit, status } = await request.json();
+  const {
+    email,
+    amount,
+    selectedDate,
+    asset,
+    duration,
+    type,
+    entryPrice,
+    lotSize,
+    stopLoss,
+    takeProfit,
+    status,
+  } = await request.json();
 
   try {
     // Find the user by email

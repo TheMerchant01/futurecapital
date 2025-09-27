@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../../mongodbConnect";
+import UserModel from "../../../mongodbConnect";
 
 export async function POST(request) {
   const { email, password } = await request.json();

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { getCustomEmailTemplate } from "../../../../lib/emailTemplates";
+import { getCustomEmailTemplate } from "../../../lib/emailTemplates";
 
 export async function POST(request) {
   const { emailData } = await request.json();

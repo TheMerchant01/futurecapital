@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../../mongodbConnect";
+import UserModel from "../../../mongodbConnect";
 import nodemailer from "nodemailer";
-import { getWithdrawalConfirmationTemplate } from "../../../../lib/emailTemplates";
+import { getWithdrawalConfirmationTemplate } from "../../../lib/emailTemplates";
 import { randomUUID } from "crypto";
 
 // POST - Approve or decline withdrawal fee payment

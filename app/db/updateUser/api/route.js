@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../../mongodbConnect";
+import UserModel from "../../../mongodbConnect";
 import { log } from "console";
 
 export async function POST(request) {
@@ -25,13 +25,10 @@ export async function POST(request) {
     tradingProgress,
     customMessage,
     upgraded,
-    trade
+    trade,
   } = await request.json();
 
-
   try {
-
-    
     // Find the user by email and update their data
     const user = await UserModel.findOneAndUpdate(
       { email },
@@ -56,11 +53,10 @@ export async function POST(request) {
         tradingProgress,
         customMessage,
         upgraded,
-        trade
+        trade,
       },
       { new: true } // Return the updated document
     );
-
 
     if (!user) {
       return NextResponse.error("User not found", { status: 404 });

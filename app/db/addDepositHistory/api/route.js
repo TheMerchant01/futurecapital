@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../../mongodbConnect";
+import UserModel from "../../../mongodbConnect";
 import mongoose from "mongoose";
 
 // Define the POST method to add deposit history
@@ -40,4 +40,3 @@ export async function POST(request) {
     return NextResponse.error("Internal Server Error", { status: 500 });
   }
 }
-

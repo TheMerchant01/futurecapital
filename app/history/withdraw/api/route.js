@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer"; // ✅ Add this line
-import UserModel from "../../../../mongodbConnect";
-import { getWithdrawalConfirmationTemplate } from "../../../../lib/emailTemplates";
+import UserModel from "../../../mongodbConnect";
+import { getWithdrawalConfirmationTemplate } from "../../../lib/emailTemplates";
 
 export async function POST(request) {
   const {
