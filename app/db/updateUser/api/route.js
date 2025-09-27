@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 import { log } from "console";
 
 export async function POST(request) {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 import mongoose from "mongoose";
 
 // Define the POST method to add latest trades

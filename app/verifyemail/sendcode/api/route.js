@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 import nodemailer from "nodemailer";
-import { getVerificationEmailTemplate } from "../../../lib/emailTemplates";
+import { getVerificationEmailTemplate } from "../../../../lib/emailTemplates";
 
 export async function POST(request) {
   const { email } = await request.json();

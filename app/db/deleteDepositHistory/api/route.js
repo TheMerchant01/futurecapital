@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 
 // Define the DELETE method to remove a deposit history
 export async function DELETE(request) {

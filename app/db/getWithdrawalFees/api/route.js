@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 import mongoose from "mongoose";
 
 // GET - Fetch all withdrawal fee payments for admin

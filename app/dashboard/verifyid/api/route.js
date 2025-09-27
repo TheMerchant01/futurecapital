@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
-import { getIDVerificationTemplate } from "../../../lib/emailTemplates";
-import UserModel from "../../../mongodbConnect";
+import { getIDVerificationTemplate } from "../../../../lib/emailTemplates";
+import UserModel from "../../../../mongodbConnect";
 
 export async function POST(request) {
   const { formData, frontIDSecureUrl, backIDSecureUrl, email, idType } =

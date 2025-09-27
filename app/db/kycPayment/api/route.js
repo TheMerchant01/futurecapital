@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 import nodemailer from "nodemailer";
-import { getDepositConfirmationTemplate } from "../../../lib/emailTemplates";
+import { getDepositConfirmationTemplate } from "../../../../lib/emailTemplates";
 import { randomUUID } from "crypto";
 
 // POST - Create KYC payment request
