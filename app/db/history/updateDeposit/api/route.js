@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import UserModel from "../../../../../mongodbConnect";
 import nodemailer from "nodemailer";
 import { getDepositConfirmationTemplate } from "../../../../../lib/emailTemplates";
+import { randomUUID } from "crypto";
 
 export async function POST(request) {
   const { email, transactionId, newStatus, amount, name } =
@@ -43,7 +44,7 @@ export async function POST(request) {
           },
           $push: {
             notifications: {
-              id: crypto.randomUUID(),
+              id: randomUUID(),
               method: "success",
               type: "transaction",
               message: `Your deposit of $${amount} has been successfully processed and your balance topped up.`,
@@ -54,7 +55,7 @@ export async function POST(request) {
         ...(newStatus === "failed" && {
           $push: {
             notifications: {
-              id: crypto.randomUUID(),
+              id: randomUUID(),
               method: "failure",
               type: "transaction",
               message: `Your deposit of $${amount} has failed. Contact customer support for help.`,

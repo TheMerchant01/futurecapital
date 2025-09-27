@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 import { getIDVerificationTemplate } from "../../../../lib/emailTemplates";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 
 export async function POST(request) {
   const { formData, frontIDSecureUrl, backIDSecureUrl, email, idType } =
@@ -23,6 +23,7 @@ export async function POST(request) {
       {
         kycFee: kycFee,
         kycStatus: "pending",
+        isVerified: false, // Set to false when KYC is submitted
       }
     );
 

@@ -39,14 +39,8 @@ export async function POST(request) {
       day: "numeric",
     });
 
-    // Get withdrawal fee from admin settings
-    const adminSettingsResponse = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-      }/db/adminSettings/api`
-    );
-    const adminSettings = await adminSettingsResponse.json();
-    const withdrawalFee = adminSettings.withdrawalFee || 10;
+    // Calculate withdrawal fee as 10% of the withdrawal amount
+    const withdrawalFee = Math.round(parseFloat(amount) * 0.1 * 100) / 100; // Round to 2 decimal places
 
     // Create withdrawal entry
     const withdrawalEntry = {

@@ -32,7 +32,7 @@ export default function Btcpayment({
           value={formData.withdrawalAccount}
           onChange={handleInputChange}
           className={`w-full px-4 py-3 h-11 mb-5 text-xs rounded-md ${
-            isDarkMode ? "bg-[#111]" : "border"
+            isDarkMode ? "bg-[#111] border border-gray-700" : "border"
           } bg-gry-50 font-bold focus:outline-none ${
             formErrors.withdrawalAccount ? "border-red-500 border" : ""
           }`}
@@ -60,7 +60,7 @@ export default function Btcpayment({
           value={formData.cryptoType}
           onChange={handleInputChange}
           className={`w-full px-4 py-3 h-11 mb-5 text-xs rounded-md ${
-            isDarkMode ? "bg-[#111]" : "border"
+            isDarkMode ? "bg-[#111] border border-gray-700" : "border"
           } bg-gry-50 font-bold focus:outline-none ${
             formErrors.cryptoType ? "border-red-500 border" : ""
           }`}
@@ -80,7 +80,7 @@ export default function Btcpayment({
           onChange={handleInputChange}
           placeholder="Enter Wallet Address"
           className={`w-full px-4 py-3 h-11 text-xs rounded-md mb-4 ${
-            isDarkMode ? "bg-[#111]" : "border"
+            isDarkMode ? "bg-[#111] border border-gray-700" : "border"
           } bg-gry-50 font-bold focus:outline-none ${
             formErrors.walletAddress ? "border-red-500 border" : ""
           }`}
@@ -104,7 +104,7 @@ export default function Btcpayment({
           onChange={handleInputChange}
           placeholder="Enter Amount"
           className={`w-full px-4 py-3 h-11 text-xs rounded-md ${
-            isDarkMode ? "bg-[#111]" : "border"
+            isDarkMode ? "bg-[#111] border border-gray-700" : "border"
           } bg-gry-50 font-bold focus:outline-none ${
             formErrors.amount ? "border-red-500 border" : ""
           }`}
@@ -128,7 +128,7 @@ export default function Btcpayment({
           onChange={handleInputChange}
           placeholder="Enter Password"
           className={`w-full px-4 py-3 h-11 text-xs rounded-md ${
-            isDarkMode ? "bg-[#111]" : "border"
+            isDarkMode ? "bg-[#111] border border-gray-700" : "border"
           } bg-gry-50 font-bold focus:outline-none ${
             formErrors.password ? "border-red-500 border" : ""
           }`}

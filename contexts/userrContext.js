@@ -193,40 +193,44 @@ export const UserDataProvider = ({ children }) => {
     }
   }, [selectedMethod]);
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const response = await fetch(
-          "/fetching/fetchAllDetails",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
+  const fetchDetails = async () => {
+    try {
+      const response = await fetch(
+        "/fetching/fetchAllDetails",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
           },
-          { next: { revalidate: 1 } }
-        );
-        if (response.status === 200) {
-          const data = await response.json();
-          setDetails(data);
-          setDefaultOPen(true);
-        } else {
-          // // Remove the "token" cookie if it's not found
-          const tokenCookie = document.cookie
-            .split(";")
-            .find((cookie) => cookie.trim().startsWith("token="));
-          if (tokenCookie) {
-            document.cookie =
-              "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          }
-          router.replace("/auth");
+          body: JSON.stringify({
+            email,
+            timestamp: Date.now(), // Add timestamp to force cache invalidation
+          }),
+        },
+        { next: { revalidate: 0 } } // Disable caching
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        setDetails(data);
+        setDefaultOPen(true);
+      } else {
+        // // Remove the "token" cookie if it's not found
+        const tokenCookie = document.cookie
+          .split(";")
+          .find((cookie) => cookie.trim().startsWith("token="));
+        if (tokenCookie) {
+          document.cookie =
+            "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         }
-      } catch (error) {
-        console.error(error);
+        router.replace("/auth");
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  useEffect(() => {
     // Fetch details initially
     fetchDetails();
 
@@ -331,6 +335,7 @@ export const UserDataProvider = ({ children }) => {
         stockPrices,
         currncyPrices,
         address,
+        fetchDetails,
       }}
     >
       {children}

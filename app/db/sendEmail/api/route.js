@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { getDepositConfirmationTemplate } from "../../../../lib/emailTemplates";
+import { randomUUID } from "crypto";
 
 export async function POST(request) {
   const { email, amount, name, type } = await request.json();
@@ -27,7 +28,7 @@ export async function POST(request) {
       html: getDepositConfirmationTemplate(
         amount,
         "Deposit",
-        crypto.randomUUID(),
+        randomUUID(),
         name,
         "success"
       ),

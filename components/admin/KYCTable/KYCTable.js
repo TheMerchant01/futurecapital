@@ -25,9 +25,13 @@ export default function KYCTable() {
 
   const fetchKYCRequests = async () => {
     try {
-      const response = await axios.get("/db/getKYCRequests/api");
+      const response = await axios.get("/db/getUser/api");
       if (response.status === 200) {
-        setKycRequests(response.data.kycRequests);
+        // Filter users who have KYC requests (pending, approved, or declined)
+        const kycUsers = response.data.users.filter(
+          (user) => user.kycStatus && user.kycStatus !== "not_submitted"
+        );
+        setKycRequests(kycUsers);
       }
     } catch (error) {
       console.error("Error fetching KYC requests:", error);

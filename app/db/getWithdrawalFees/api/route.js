@@ -1,13 +1,38 @@
 import { NextResponse } from "next/server";
 import UserModel from "../../../../mongodbConnect";
+import mongoose from "mongoose";
 
 // GET - Fetch all withdrawal fee payments for admin
 export async function GET() {
   try {
-    // Get all users with withdrawal fee history
-    const users = await UserModel.find({
-      withdrawalFeeHistory: { $exists: true, $ne: [] },
-    });
+    // Force a fresh database connection and query
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Force a completely fresh database connection
+    const db = mongoose.connection.db;
+
+    // List all collections to see what's available
+    const collections = await db.listCollections().toArray();
+
+    // Try to find the correct collection name
+    const collectionName =
+      collections.find((c) => c.name.toLowerCase().includes("user"))?.name ||
+      "users";
+
+    const collection = db.collection(collectionName);
+
+    // Use raw MongoDB query with read concern to ensure latest data
+    const users = await collection
+      .find(
+        {
+          withdrawalFeeHistory: { $exists: true, $ne: [] },
+        },
+        {
+          readConcern: { level: "majority" },
+          readPreference: "primary",
+        }
+      )
+      .toArray();
 
     // Flatten all fee payments with user information
     const feePayments = [];
@@ -34,10 +59,20 @@ export async function GET() {
     // Sort by date (newest first)
     feePayments.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       feePayments: feePayments,
     });
+
+    // Add cache-busting headers
+    response.headers.set(
+      "Cache-Control",
+      "no-cache, no-store, must-revalidate"
+    );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
+
+    return response;
   } catch (error) {
     console.error("Error fetching withdrawal fees:", error);
     return NextResponse.json(

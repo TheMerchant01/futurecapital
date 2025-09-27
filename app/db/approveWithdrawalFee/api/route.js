@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import UserModel from "../../../../mongodbConnect";
 import nodemailer from "nodemailer";
 import { getWithdrawalConfirmationTemplate } from "../../../../lib/emailTemplates";
+import { randomUUID } from "crypto";
 
 // POST - Approve or decline withdrawal fee payment
 export async function POST(request) {
@@ -38,42 +39,54 @@ export async function POST(request) {
       day: "numeric",
     });
 
+    // Mark the withdrawalFeeHistory array as modified for Mongoose dirty checking
+    user.markModified("withdrawalFeeHistory");
+
     // If approved, update the withdrawal status to allow processing
+    let withdrawal = null;
     if (status === "approved") {
       // Find the withdrawal request and update its status
-      const withdrawal = user.withdrawalHistory.find(
-        (w) => w.id === withdrawalId
-      );
+      withdrawal = user.withdrawalHistory.find((w) => w.id === withdrawalId);
 
       if (withdrawal) {
         withdrawal.feePaid = true;
         withdrawal.feePaymentId = feePaymentId;
+        withdrawal.transactionStatus = "pending"; // Update status from "pending_fee" to "pending"
+
+        // Mark the withdrawalHistory array as modified for Mongoose dirty checking
+        user.markModified("withdrawalHistory");
       }
 
       // Add notification
       user.notifications.push({
-        id: crypto.randomUUID(),
+        id: randomUUID(),
         method: "success",
         type: "transaction",
         message: `Your withdrawal fee of $${feePayment.amount} has been approved. Your withdrawal is now being processed.`,
         date: Date.now(),
       });
+
+      // Mark the notifications array as modified for Mongoose dirty checking
+      user.markModified("notifications");
     } else if (status === "declined") {
       // Add notification for declined fee
       user.notifications.push({
-        id: crypto.randomUUID(),
+        id: randomUUID(),
         method: "failure",
         type: "transaction",
         message: `Your withdrawal fee payment of $${feePayment.amount} has been declined. Please contact support for assistance.`,
         date: Date.now(),
       });
+
+      // Mark the notifications array as modified for Mongoose dirty checking
+      user.markModified("notifications");
     }
 
     user.isReadNotifications = false;
-    await user.save();
+    await user.save({ writeConcern: { w: "majority", j: true } });
 
     // Send email notification to user
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: "smtp.hostinger.com",
       port: 465,
       secure: true,

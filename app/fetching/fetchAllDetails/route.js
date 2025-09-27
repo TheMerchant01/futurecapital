@@ -18,7 +18,16 @@ export async function POST(request) {
     // Revalidate the '/dashboard' path to update cached data
     revalidatePath("/dashboard");
 
-    return NextResponse.json(detail);
+    // Add cache-busting headers to ensure fresh data
+    const response = NextResponse.json(detail);
+    response.headers.set(
+      "Cache-Control",
+      "no-cache, no-store, must-revalidate"
+    );
+    response.headers.set("Pragma", "no-cache");
+    response.headers.set("Expires", "0");
+
+    return response;
   } catch (error) {
     // Handle any other errors that might occur
     return NextResponse.error("An error occurred", { status: 500 });

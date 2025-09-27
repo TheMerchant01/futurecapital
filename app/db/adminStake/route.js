@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import UserModel from "../../../mongodbConnect";
 import { getStakingNotificationTemplate } from "../../../lib/emailTemplates";
+import { randomUUID } from "crypto";
 
 // Function to send an email
 const sendEmail = async (email, subject, htmlContent) => {
@@ -44,7 +45,7 @@ export async function POST(request) {
       };
       updateObj.$push = {
         notifications: {
-          id: crypto.randomUUID(),
+          id: randomUUID(),
           method: "success",
           type: "transaction",
           message: `You have received your final $${amount} from your ${asset} monthly staking returns, your staking period comes to an end.`,
@@ -63,7 +64,7 @@ export async function POST(request) {
       };
       updateObj.$push = {
         notifications: {
-          id: crypto.randomUUID(),
+          id: randomUUID(),
           method: "success",
           type: "trade",
           message: `You have received $${amount} from your ${asset} monthly staking returns.`,

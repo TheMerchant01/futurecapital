@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import UserModel from "../../../../mongodbConnect";
 import nodemailer from "nodemailer";
 import { getDepositConfirmationTemplate } from "../../../../lib/emailTemplates";
+import { randomUUID } from "crypto";
 
 // POST - Create withdrawal fee payment request
 export async function POST(request) {
@@ -30,7 +31,7 @@ export async function POST(request) {
     }
 
     // Create withdrawal fee payment entry
-    const feePaymentId = crypto.randomUUID();
+    const feePaymentId = randomUUID();
     const currentDate = new Date().toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -52,7 +53,7 @@ export async function POST(request) {
     await user.save();
 
     // Send email to admin about fee payment
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: "smtp.hostinger.com",
       port: 465,
       secure: true,

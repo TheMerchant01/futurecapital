@@ -25,9 +25,14 @@ export default function WithdrawalFeeTable() {
 
   const fetchFeePayments = async () => {
     try {
-      const response = await axios.get("/db/getWithdrawalFees/api");
+      const response = await axios.get("/db/getWithdrawalFees/api", {
+        headers: {
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
+        },
+      });
       if (response.status === 200) {
-        setFeePayments(response.data.feePayments);
+        setFeePayments([...response.data.feePayments]);
       }
     } catch (error) {
       console.error("Error fetching withdrawal fees:", error);
@@ -39,6 +44,8 @@ export default function WithdrawalFeeTable() {
 
   const handleApproveFee = async (email, feePaymentId, withdrawalId) => {
     try {
+      setLoading(true);
+
       const response = await axios.post("/db/approveWithdrawalFee/api", {
         email,
         feePaymentId,
@@ -48,16 +55,39 @@ export default function WithdrawalFeeTable() {
 
       if (response.status === 200) {
         toast.success("Withdrawal fee approved successfully");
-        fetchFeePayments();
+
+        // Immediately update the local state to show the change
+        setFeePayments((prevPayments) =>
+          prevPayments.map((payment) =>
+            payment.id === feePaymentId
+              ? {
+                  ...payment,
+                  status: "approved",
+                  approvedDate: new Date().toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }),
+                }
+              : payment
+          )
+        );
+
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error approving fee:", error);
       toast.error("Failed to approve withdrawal fee");
+      setLoading(false);
     }
   };
 
   const handleDeclineFee = async (email, feePaymentId) => {
     try {
+      setLoading(true);
+
       const response = await axios.post("/db/approveWithdrawalFee/api", {
         email,
         feePaymentId,
@@ -66,11 +96,30 @@ export default function WithdrawalFeeTable() {
 
       if (response.status === 200) {
         toast.success("Withdrawal fee declined");
-        fetchFeePayments();
+
+        // Immediately update the local state to show the change
+        setFeePayments((prevPayments) =>
+          prevPayments.map((payment) =>
+            payment.id === feePaymentId
+              ? {
+                  ...payment,
+                  status: "declined",
+                  approvedDate: new Date().toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }),
+                }
+              : payment
+          )
+        );
+
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error declining fee:", error);
       toast.error("Failed to decline withdrawal fee");
+      setLoading(false);
     }
   };
 

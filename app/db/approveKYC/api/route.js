@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import UserModel from "../../../../mongodbConnect";
 import nodemailer from "nodemailer";
+import { randomUUID } from "crypto";
 
 // POST - Approve or decline KYC verification
 export async function POST(request) {
@@ -25,10 +26,17 @@ export async function POST(request) {
       day: "numeric",
     });
 
+    // Update isVerified field based on KYC status
+    if (status === "approved") {
+      user.isVerified = true;
+    } else if (status === "declined") {
+      user.isVerified = false;
+    }
+
     // Add notification
     if (status === "approved") {
       user.notifications.push({
-        id: crypto.randomUUID(),
+        id: randomUUID(),
         method: "success",
         type: "verification",
         message:
@@ -37,7 +45,7 @@ export async function POST(request) {
       });
     } else if (status === "declined") {
       user.notifications.push({
-        id: crypto.randomUUID(),
+        id: randomUUID(),
         method: "failure",
         type: "verification",
         message: `Your KYC verification has been declined. ${
@@ -51,7 +59,7 @@ export async function POST(request) {
     await user.save();
 
     // Send email notification to user
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: "smtp.hostinger.com",
       port: 465,
       secure: true,

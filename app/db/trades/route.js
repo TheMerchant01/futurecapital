@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import UserModel from "../../../mongodbConnect";
-import crypto from "crypto";
+import { randomUUID } from "crypto";
 
 export async function POST(request) {
   const { email, tradeId, newStatus, asset, type, price, gain, loss, amount } =
@@ -26,7 +26,7 @@ export async function POST(request) {
         notifications: {
           $each: [
             {
-              id: crypto.randomUUID(),
+              id: randomUUID(),
               method: "success",
               type: "trade",
               message: `Your ${asset} ${type} at ${price} trade hits Gain. Profit of $${gain} has been sent to your balance`,
@@ -47,7 +47,7 @@ export async function POST(request) {
         notifications: {
           $each: [
             {
-              id: crypto.randomUUID(),
+              id: randomUUID(),
               method: "failure",
               type: "trade",
               message: `Your ${asset} ${type} at ${price} trade hits a Loss, you lost $${loss} of your $${amount} trade placed. $${

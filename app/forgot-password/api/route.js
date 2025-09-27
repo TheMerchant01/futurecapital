@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import UserModel from "../../../mongodbConnect";
+import UserModel from "../../../../mongodbConnect";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { getPasswordResetTemplate } from "../../../../lib/emailTemplates";
